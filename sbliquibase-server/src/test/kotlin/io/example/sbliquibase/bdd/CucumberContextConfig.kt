@@ -1,10 +1,10 @@
-package io.github.sbliquibase.bdd
+package io.example.sbliquibase.bdd
 
 import com.ragin.bdd.cucumber.core.DatabaseExecutorService
 import com.ragin.bdd.cucumber.utils.JsonUtils
 import io.cucumber.java.Before
 import io.cucumber.spring.CucumberContextConfiguration
-import io.github.application.ApiApplication
+import io.example.application.ApiApplication
 import mu.KotlinLogging
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.test.context.SpringBootContextLoader
@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFIN
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.test.context.ContextConfiguration
 
-@ComponentScan("io.github")
+@ComponentScan("io.example")
 @ContextConfiguration(
     classes = [
         ApiApplication::class,
@@ -25,8 +25,8 @@ import org.springframework.test.context.ContextConfiguration
 @ConfigurationPropertiesScan(
     "com.ragin.bdd",
     "configuration.com.ragin.bdd",
-    "io.github",
-    "configuration.io.github"
+    "io.example",
+    "configuration.io.example"
 )
 @SpringBootTest(
     webEnvironment = DEFINED_PORT,

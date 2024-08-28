@@ -6,7 +6,6 @@ plugins {
 
 dependencies {
     implementation project(":sbliquibase-domain-model")
-    implementation project(":sbliquibase-domain-services")
 
     implementation "org.springframework.boot:spring-boot-starter"
     implementation "org.springframework.boot:spring-boot-starter-web"

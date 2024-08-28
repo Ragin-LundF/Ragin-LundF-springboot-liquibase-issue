@@ -3,8 +3,8 @@ kover {
         filters {
             excludes {
                 packages(
-                        "io.github.sbliquibase.client.models",
-                        "io.github.sbliquibase.dto.model"
+                        "io.example.sbliquibase.client.models",
+                        "io.example.sbliquibase.dto.model"
                 )
             }
         }

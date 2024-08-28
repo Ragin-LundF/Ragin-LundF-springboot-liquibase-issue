@@ -1,5 +1,5 @@
 tasks.register('createStartScripts', CreateStartScripts) {
-    mainClass = 'io.github.application.Application'
+    mainClass = 'io.example.application.ApiApplication'
     applicationName = "${rootProject.name}"
 }
 

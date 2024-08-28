@@ -3,7 +3,7 @@
     <option name="ACTIVE_PROFILES" value="dev" />
     <module name="sbliquibase.sbliquibase-server.main" />
     <option name="SHORTEN_COMMAND_LINE" value="ARGS_FILE" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="io.github.application.ApiApplication" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="io.example.application.ApiApplication" />
     <option name="VM_PARAMETERS" value="--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED" />
     <extension name="com.egoshard.intellij.k8s-runtime-config-plugin">
       <option name="ENABLED" value="false" />

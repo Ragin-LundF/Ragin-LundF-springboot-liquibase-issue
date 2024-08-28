@@ -16,5 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "sbliquibase"
 
 include 'sbliquibase-domain-model'
-include 'sbliquibase-domain-services'
 include 'sbliquibase-server'

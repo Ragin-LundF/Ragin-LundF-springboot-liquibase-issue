@@ -1,4 +1,4 @@
-package io.github.application
+package io.example.application
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.domain.EntityScan
@@ -18,12 +18,12 @@ import org.springframework.scheduling.annotation.EnableAsync
  * class to allow deployment in Tomcat instances.
  */
 @EnableAsync
-@EntityScan(basePackages = ["io.github.*"])
-@ComponentScan(basePackages = ["io.github.*"])
-@EnableFeignClients(basePackages = ["io.github.*"])
-@EnableJpaRepositories(basePackages = ["io.github.*"])
+@EntityScan(basePackages = ["io.example.*"])
+@ComponentScan(basePackages = ["io.example.*"])
+@EnableFeignClients(basePackages = ["io.example.*"])
+@EnableJpaRepositories(basePackages = ["io.example.*"])
 @ConfigurationPropertiesScan(basePackages = [
-    "io.github.*",
+    "io.example.*",
 ])
 @SpringBootApplication
 class ApiApplication : SpringBootServletInitializer()

@@ -1,4 +1,4 @@
-package io.github.sbliquibase.domain.models
+package io.example.sbliquibase.domain.models
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
