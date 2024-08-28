@@ -26,6 +26,7 @@ spring:
     open-in-view: false
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
+    enabled: true
 
 management:
   endpoints:
@@ -34,4 +35,4 @@ management:
         include: prometheus,health,info
 
 logging:
-  config: "classpath:log4j2-dev.xml"
+  config: "classpath:log4j2.xml"

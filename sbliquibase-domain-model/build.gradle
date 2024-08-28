@@ -1,12 +1,3 @@
-apply plugin: "kotlin-kapt"
-
 dependencies {
-    implementation("com.querydsl:querydsl-jpa::jakarta")
-
-    kapt("com.querydsl:querydsl-apt::jakarta", "jakarta.persistence:jakarta.persistence-api")
-}
-
-kapt {
-    showProcessorStats = true
-    keepJavacAnnotationProcessors = true
+    implementation "org.liquibase:liquibase-core"
 }
