@@ -1,0 +1,20 @@
+dependencyCheck {
+    formats = ['XML', 'HTML']
+
+    failBuildOnCVSS = 1
+    suppressionFile = "${rootProject.projectDir}/config/dependency-check-suppressions.xml"
+    // Only check the compile and runtime classpath and ignore findings in other configurations
+    scanConfigurations = ['compileClasspath', 'productionCompileClasspath', 'runtimeClasspath', 'productionRuntimeClasspath']
+
+    nvd {
+        validForHours = 1
+        apiKey = "none"
+    }
+
+    analyzers {
+        assemblyEnabled = false
+        nugetconfEnabled = false
+        nuspecEnabled = false
+        nodeEnabled = false
+    }
+}

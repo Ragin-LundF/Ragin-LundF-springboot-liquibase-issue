@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  pg-sbliquibase:
+    container_name: postgres-sbliquibase
+    image: postgres:16.2
+    ports:
+      - "5432:5432"
+    networks:
+      - sbliquibase-net
+    environment:
+      - 'POSTGRES_PASSWORD=sbliquibase'
+      - 'POSTGRES_USER=sbliquibase'
+      - 'POSTGRES_DB=sbliquibase'
+networks:
+  sbliquibase-net:

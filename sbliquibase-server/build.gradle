@@ -1,0 +1,47 @@
+plugins {
+    id "war"
+    id "project-report"
+    id "net.nemerosa.versioning"
+}
+
+dependencies {
+    implementation project(":sbliquibase-domain-model")
+    implementation project(":sbliquibase-domain-services")
+
+    implementation "org.springframework.boot:spring-boot-starter"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation "io.micrometer:micrometer-registry-prometheus"
+
+    implementation "org.mariadb.jdbc:mariadb-java-client"
+    implementation "org.postgresql:postgresql"
+
+    providedRuntime "org.springframework.boot:spring-boot-starter-tomcat"
+}
+
+tasks.named('bootWar') {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+bootWar {
+    enabled(true)
+}
+
+war {
+    enabled(false)
+}
+
+springBoot {
+    buildInfo()
+}
+
+import org.apache.tools.ant.filters.ReplaceTokens
+processResources {
+    filesMatching('**/banner.txt') {
+        filter ReplaceTokens, tokens: [
+                "sbliquibase.version": project.property("version")
+        ]
+    }
+}
+apply from: "task_dependencies.gradle"

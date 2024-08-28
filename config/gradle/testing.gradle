@@ -1,0 +1,54 @@
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+test {
+    useJUnitPlatform {
+        excludeEngines 'junit-vintage'
+    }
+    exclude '**/*Cucumber*'
+    minHeapSize = "512m"
+    maxHeapSize = "3072m"
+    jvmArgs = [
+            '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+            '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+            '--add-opens', 'java.base/java.time=ALL-UNNAMED',
+    ]
+    onlyIf("Execute only if test task is called directly") {
+        gradle.startParameter.taskNames.toString().contains("test")
+    }
+}
+
+tasks.register('cucumber', Test) {
+    group 'verification'
+    dependsOn assemble
+    exclude '**/*Tests*'
+    include '**/*CucumberRun*'
+    systemProperty 'spring.profiles.active', 'cucumber'
+    jvmArgs = [
+            '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+            '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+            '--add-opens', 'java.base/java.time=ALL-UNNAMED',
+    ]
+    onlyIf("Execute only if cucumber task is called directly") {
+        gradle.startParameter.taskNames.contains("cucumber")
+    }
+}
+
+tasks.register('cucumberBurp', Test) {
+    group 'verification'
+    dependsOn assemble
+    exclude '**/*Tests*'
+    include '**/*CucumberBurp*'
+    systemProperty 'spring.profiles.active', 'cucumberBurp'
+    jvmArgs = [
+            '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+            '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+            '--add-opens', 'java.base/java.time=ALL-UNNAMED',
+    ]
+    onlyIf("Execute only if cucumberBurp task is called directly") {
+        gradle.startParameter.taskNames.contains("cucumberBurp")
+    }
+}

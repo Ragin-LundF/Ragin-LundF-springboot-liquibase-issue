@@ -1,0 +1,121 @@
+import com.github.jk1.license.filter.LicenseBundleNormalizer
+import com.github.jk1.license.render.InventoryHtmlReportRenderer
+import io.gitlab.arturbosch.detekt.Detekt
+import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+buildscript {
+    ext.kotlin_version = "1.9.23"
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
+        classpath "org.jmailen.gradle:kotlinter-gradle:4.4.1"
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:5.2.3"
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:6.25.0"
+        classpath "org.checkerframework:checker-qual:3.45.0"
+    }
+}
+
+plugins {
+    id "maven-publish"
+    id "project-report"
+    id "org.sonarqube" version "5.1.0.4882"
+    id "com.github.spotbugs" version "6.0.19"
+    id "org.springframework.boot" version "3.3.3"
+    id "org.owasp.dependencycheck" version "10.0.3"
+    id "com.github.ben-manes.versions" version "0.51.0"
+    id "io.spring.dependency-management" version "1.1.6"
+    id "se.patrikerdes.use-latest-versions" version "0.2.18"
+    id "com.github.jk1.dependency-license-report" version "2.8"
+    id "net.nemerosa.versioning" version "3.1.0"
+    id "org.jetbrains.kotlin.jvm" version "${kotlin_version}"
+    id "org.jetbrains.kotlin.kapt" version "${kotlin_version}"
+    id "org.jetbrains.kotlin.plugin.spring" version "${kotlin_version}"
+    id "org.jetbrains.kotlin.plugin.allopen" version "${kotlin_version}"
+    id "io.gitlab.arturbosch.detekt" version "1.23.6"
+    id "org.jetbrains.kotlinx.kover" version "0.8.3"
+}
+
+wrapper {
+    gradleVersion = "8.9"
+}
+
+ext {
+    generatedSources = 'src/generated/java'
+}
+
+version = "${version}"
+
+// ------ Common configuration
+allprojects {
+    // export of classes for subscripts
+    ext.KotlinCompile = KotlinCompile
+
+    apply plugin: "idea"
+    apply plugin: "kotlin"
+    apply plugin: "java-library"
+    apply plugin: "project-report"
+    apply plugin: "com.jfrog.artifactory"
+    apply plugin: "org.springframework.boot"
+    apply plugin: "org.owasp.dependencycheck"
+    apply plugin: "com.github.ben-manes.versions"
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: "se.patrikerdes.use-latest-versions"
+
+    buildscript {
+        repositories {
+            mavenCentral()
+        }
+    }
+
+    apply from: "${rootDir}/config/gradle/java.gradle"
+    apply from: "${rootDir}/config/gradle/owasp_dep_check.gradle"
+    apply from: "${rootDir}/config/gradle/dependency_updates.gradle"
+    apply from: "${rootDir}/config/gradle/gradle_excludes.gradle"
+}
+
+// ------ Subproject configuration
+subprojects {
+    // export of classes for subscripts
+    ext.Detekt = Detekt
+    ext.DetektCreateBaselineTask = DetektCreateBaselineTask
+
+    apply plugin: "pmd"
+    apply plugin: "checkstyle"
+    apply plugin: "com.github.spotbugs"
+    apply plugin: "io.gitlab.arturbosch.detekt"
+    apply plugin: "kotlin-spring"
+    apply plugin: "maven-publish"
+    apply plugin: "org.jetbrains.kotlinx.kover"
+
+    apply from: "${rootDir}/dependencies.gradle"
+    apply from: "${rootDir}/config/gradle/static_analysis.gradle"
+    apply from: "${rootDir}/config/gradle/testing.gradle"
+
+    rootProject.dependencies.add("kover", it)
+
+    // convenience task to find transient dependencies. Example usage:
+    // "./gradlew allDepInsight --configuration runtimeClasspath --dependency io.netty:netty-buffer"
+    tasks.register('allDepInsight', DependencyInsightReportTask) {
+        showingAllVariants.set(false)
+    }
+}
+
+licenseReport {
+    allowedLicensesFile = new File("${rootProject.projectDir}/config/license-allowed.json")
+    outputDir = "${rootProject.projectDir}/sbliquibase-server/build/resources/main/static/licenses/"
+    renderers = [
+            new InventoryHtmlReportRenderer()
+    ]
+    filters = [
+            new LicenseBundleNormalizer(bundlePath: "${rootProject.projectDir}/config/license-normalizer-bundle.json")
+    ]
+}
+
+tasks.checkLicense.mustRunAfter(tasks.processResources)
+tasks.checkLicense.mustRunAfter(":sbliquibase-server:processResources")
+tasks.checkLicense.dependsOn(tasks.generateLicenseReport)
+tasks.assemble.dependsOn(tasks.checkLicense)
+tasks.classes.dependsOn(tasks.compileKotlin)
+
+apply from: "${rootDir}/config/gradle/kover_sonar.gradle"

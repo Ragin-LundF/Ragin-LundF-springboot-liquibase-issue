@@ -1,0 +1,39 @@
+tasks.withType(Detekt).configureEach {
+    exclude("**/gen/**")
+    reports {
+        html.required.set(true) // observe findings in your browser with structure and code snippets
+        xml.required.set(true) // checkstyle like format mainly for integrations like Jenkins
+        sarif.required.set(true)
+        // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with Github Code Scanning
+    }
+}
+
+detekt {
+    config.setFrom("${rootDir}/config/detekt.yml")
+    buildUponDefaultConfig = true
+}
+
+tasks.assemble.finalizedBy(tasks.detekt)
+
+pmd {
+    consoleOutput = true
+    ruleSets = ["${rootProject.projectDir}/config/pmd-ruleset.xml"]
+}
+
+checkstyle {
+    configFile = file("${rootProject.projectDir}/config/checkstyle-config.xml")
+    configProperties = [
+            "suppressionFile": file("${rootProject.projectDir}/config/checkstyle-suppressions.xml")
+    ]
+}
+
+tasks.matching { task -> task.name.startsWith('spotbugs') }.forEach {
+    it.reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+spotbugs {
+    excludeFilter = file("${rootProject.projectDir}/config/spotbugs-exclude.xml")
+}

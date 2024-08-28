@@ -1,0 +1,55 @@
+tasks.register('createStartScripts', CreateStartScripts) {
+    mainClass = 'io.github.application.Application'
+    applicationName = "${rootProject.name}"
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+    archiveClassifier.set('')   // remove "plain" suffix for jar files
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(javaVersion))
+    }
+    withSourcesJar()
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(javaVersion))
+    }
+}
+tasks.withType(KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = javaVersion
+        freeCompilerArgs = ["-Xjvm-default=all"]
+    }
+}
+
+compileJava {
+    options.encoding = "UTF-8"
+    options.incremental = true
+}
+compileTestJava {
+    options.encoding = "UTF-8"
+    options.incremental = true
+}
+
+// define source sets for generated classes
+sourceSets {
+    main {
+        java {
+            srcDirs = [
+                    'src/generated/java',
+                    'src/generated/src/main/kotlin',
+                    'src/main/java',
+                    'src/main/kotlin'
+            ]
+        }
+    }
+}

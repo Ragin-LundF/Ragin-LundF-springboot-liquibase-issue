@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Elasticsearch name="ELASTIC_BATCH">
+            <RollingIndexName indexName="${env:ELASTIC_INDEX}" pattern="${env:ELASTIC_PATTERN:-yyyy.MM.dd}" timeZone="Europe/Berlin" />
+            <JsonTemplateLayout eventTemplateUri="classpath:LogstashJsonEventLayoutV1.json">
+                <EventTemplateAdditionalField key="service" value="sbliquibase"/>
+            </JsonTemplateLayout>
+
+            <AsyncBatchDelivery>
+                <JestHttp serverUris="${env:ELASTIC_HOST}" />
+            </AsyncBatchDelivery>
+        </Elasticsearch>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="ELASTIC_BATCH"/>
+        </Root>
+        <Logger name="io.github" level="info"/>
+    </Loggers>
+</Configuration>

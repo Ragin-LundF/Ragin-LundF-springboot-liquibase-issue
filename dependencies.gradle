@@ -1,0 +1,108 @@
+dependencyManagement {
+    imports {
+        mavenBom "com.fasterxml.jackson:jackson-bom:2.16.1"
+        // overwriting log4j versions of Spring
+        mavenBom "org.apache.logging.log4j:log4j-bom:2.23.1"
+        mavenBom "io.github.openfeign:feign-bom:13.3"
+        mavenBom "com.querydsl:querydsl-bom:5.1.0"
+        mavenBom "io.micrometer:micrometer-bom:1.13.2"
+        mavenBom "org.testcontainers:testcontainers-bom:1.20.0"
+    }
+    dependencies {
+        // overwriting log4j versions of Spring
+        dependency "org.appenders.log4j:log4j2-elasticsearch-jest:1.6.1"
+        dependency "io.github.microutils:kotlin-logging:3.0.5"
+
+        dependency "org.springframework.cloud:spring-cloud-starter-openfeign:4.1.2"
+
+        dependency "org.yaml:snakeyaml:2.2"
+
+        dependency "com.google.code.findbugs:jsr305:3.0.2"
+        dependency "com.google.code.findbugs:findbugs-annotations:3.0.1"
+
+        dependency "com.sun.xml.bind:jaxb-impl:4.0.5"
+        dependency "com.sun.xml.bind:jaxb-core:4.0.5"
+
+        dependency "com.google.guava:guava:33.2.1-jre"
+
+        dependency "org.apache.commons:commons-lang3:3.15.0"
+        dependency "org.apache.commons:commons-collections4:4.4"
+        dependency "commons-io:commons-io:2.16.1" // ensure to not use the date version, which is much older
+        dependency "commons-codec:commons-codec:1.16.0"
+
+        dependency "org.openjdk.jmh:jmh-generator-annprocess:1.37"
+        dependency "io.github.ragin-lundf:bdd-cucumber-gherkin-lib:2.12.0"
+
+        dependency "org.mapstruct:mapstruct:1.5.5.Final"
+        dependency "org.mapstruct:mapstruct-processor:1.5.5.Final"
+        dependency "org.owasp.encoder:encoder:1.2.3"
+
+        dependency "org.hibernate:hibernate-jcache:6.4.1.Final"
+        dependency "org.postgresql:postgresql:42.7.3"
+
+        dependency "net.javacrumbs.shedlock:shedlock-spring:5.14.0"
+        dependency "net.javacrumbs.shedlock:shedlock-provider-jdbc-template:5.13.0"
+
+        dependency "io.github.serpro69:kotlin-faker:1.15.0"
+        dependency "org.jeasy:easy-random-core:5.0.0"
+
+        dependency "com.ninja-squad:springmockk:4.0.2"
+
+        dependency "nl.jqno.equalsverifier:equalsverifier:3.15.4"
+        dependency "org.mockito.kotlin:mockito-kotlin:5.4.0"
+    }
+}
+
+dependencies {
+    // project dependencies
+    implementation "org.apache.logging.log4j:log4j-layout-template-json"
+    implementation "org.springframework.boot:spring-boot-starter-log4j2"
+    implementation "org.appenders.log4j:log4j2-elasticsearch-jest"
+    implementation "io.github.microutils:kotlin-logging"
+
+    implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    // required for bean validation
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.boot:spring-boot-starter-cache"
+    implementation "javax.cache:cache-api"
+    implementation "org.hibernate.orm:hibernate-jcache"
+
+    implementation "com.google.code.findbugs:jsr305"
+    implementation "com.google.code.findbugs:findbugs-annotations"
+    implementation "io.github.openfeign:feign-okhttp"
+    implementation "com.google.guava:guava"
+    implementation "org.apache.commons:commons-lang3"
+    implementation "commons-io:commons-io"
+
+    implementation "com.fasterxml.jackson.core:jackson-annotations"
+    implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin"
+    implementation "com.fasterxml.jackson.module:jackson-module-jaxb-annotations"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+    implementation "com.sun.xml.bind:jaxb-impl"
+    implementation "com.sun.xml.bind:jaxb-core"
+
+    annotationProcessor "org.mapstruct:mapstruct-processor"
+    implementation "org.mapstruct:mapstruct"
+
+    implementation "org.apache.tomcat:tomcat-jdbc"
+
+    implementation "net.javacrumbs.shedlock:shedlock-spring"
+    implementation "net.javacrumbs.shedlock:shedlock-provider-jdbc-template"
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'junit', module: 'junit' //by both name and group
+    }
+    testImplementation "org.openjdk.jmh:jmh-generator-annprocess"
+    testImplementation "io.github.ragin-lundf:bdd-cucumber-gherkin-lib"
+    testImplementation "org.junit.vintage:junit-vintage-engine"
+    testImplementation "org.jeasy:easy-random-core"
+    testImplementation "org.testcontainers:testcontainers"
+    testImplementation "org.testcontainers:postgresql"
+    testImplementation "org.testcontainers:junit-jupiter"
+    testImplementation "org.awaitility:awaitility"
+    testImplementation "org.mockito.kotlin:mockito-kotlin"
+}

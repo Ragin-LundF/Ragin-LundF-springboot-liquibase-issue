@@ -1,0 +1,5 @@
+     -=: sbliquibase :=-
+
+
+Application Version :  (v@sbliquibase.version@)
+Spring Boot Version : ${spring-boot.formatted-version}

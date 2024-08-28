@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+  <changeSet id="0001-sbliquibase_create_sequence_if_not_exists" author="example">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <sequenceExists sequenceName="sbliquibase_seq"/>
+      </not>
+    </preConditions>
+    <createSequence sequenceName="sbliquibase_seq"/>
+  </changeSet>
+
+  <changeSet id="create-initial-example" author="example">
+    <createTable tableName="EXAMPLE">
+      <column name="ID" type="bigint" autoIncrement="true">
+        <constraints nullable="false" primaryKey="true"/>
+      </column>
+      <column name="MANDATORY_FIELD" type="varchar(36)">
+        <constraints nullable="false" />
+      </column>
+      <column name="NULLABLE_FIELD" type="varchar(36)"/>
+    </createTable>
+  </changeSet>
+
+</databaseChangeLog>

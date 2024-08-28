@@ -1,0 +1,29 @@
+server:
+  port: 50000
+
+spring:
+  application:
+    name: sbliquibase-test
+  main:
+    lazy-initialization: true
+  jmx:
+    enabled: false
+  datasource:
+    url: jdbc:tc:postgresql:///sbliquibase
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    tomcat:
+      connection-properties: stringtype=unspecified
+      test-on-borrow: true
+      validation-query: SELECT 1
+      validation-interval: 3000
+  jpa:
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info,mappings
